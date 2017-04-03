@@ -1,0 +1,5 @@
+service  {
+   "tinyworld.tinydb::tinyf.world" as "World" navigates ("Countries" as "Countries");
+   "tinyworld.tinydb::tinyf.country" as "Country";
+   association "Countries" principal "World"("continent") multiplicity "1" dependent "Country"("partof.continent") multiplicity "*";
+}
