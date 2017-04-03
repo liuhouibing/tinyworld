@@ -12,5 +12,4 @@
                     { "name": "tinyworldCreate",
                     "description": "Role for creating data",
 					"scope-references": [ "$XSAPPNAME.create","$XSAPPNAME.view" ] }
-                    ]
-}
+                    ]}
