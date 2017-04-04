@@ -1,25 +1,53 @@
 /*eslint no-console: 0, no-unused-vars: 0*/
 "use strict";
 
-var xsjs  = require("sap-xsjs");
+var passport = require("passport");
+var xssec = require("sap-xssec");
+var xsHDBConn = require("sap-hdbext");
+var express = require("express");
+
+var xsjs = require("sap-xsjs");
 var xsenv = require("sap-xsenv");
-var port  = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
+
+//Initialize Express App for XS UAA and HDBEXT Middleware
+var app = express();
+passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+	uaa: {
+		tag: "xsuaa"
+	}
+}).uaa));
+
+app.use(passport.initialize());
+app.use(
+	passport.authenticate("JWT", {
+		session: false
+	}),
+	xsHDBConn.middleware());
 
 var options = {
-	anonymous : true, // remove to authenticate calls
-	redirectUrl : "/index.xsjs"
+	anonymous: true, // remove to authenticate calls
+	redirectUrl: "/index.xsjs"
 };
 
 // configure HANA
 try {
-	options = Object.assign(options, xsenv.getServices({ hana: {tag: "hana"} }));
+	options = Object.assign(options, xsenv.getServices({
+		hana: {
+			tag: "hana"
+		}
+	}));
 } catch (err) {
 	console.log("[WARN]", err.message);
 }
 
 // configure UAA
 try {
-	options = Object.assign(options, xsenv.getServices({ uaa: {tag: "xsuaa"} }));
+	options = Object.assign(options, xsenv.getServices({
+		uaa: {
+			tag: "xsuaa"
+		}
+	}));
 } catch (err) {
 	console.log("[WARN]", err.message);
 }

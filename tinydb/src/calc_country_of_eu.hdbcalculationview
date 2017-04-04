@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="tinyworld.tinydb::calc_country_of_eu" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" defaultClient="crossClient" visibility="internal" outputViewType="Projection" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="tinyworld.tinydb::calc_country_of_eu" applyPrivilegeType="SQL_ANALYTIC_PRIVILEGE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" defaultClient="crossClient" visibility="internal" outputViewType="Projection" calculationScenarioType="TREE_BASED" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
 <descriptions defaultDescription="Countries of EU"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="tinyworld.tinydb::tinyf.country">
+  <DataSource id="tinyworld.tinydb::tinyf.country" partitionedExecution="false">
     <resourceUri>tinyworld.tinydb::tinyf.country</resourceUri>
   </DataSource>
 </dataSources>
 <calculationViews>
-  <calculationView xsi:type="Calculation:ProjectionView" id="Countries" filterExpressionLanguage="SQL">
+  <calculationView xsi:type="Calculation:ProjectionView" id="Countries" partitionedExecution="false">
     <viewAttributes>
       <viewAttribute id="name" measureType="simple">
         <descriptions defaultDescription="name"/>
@@ -23,9 +23,7 @@
     <input node="tinyworld.tinydb::tinyf.country">
       <mapping xsi:type="Calculation:AttributeMapping" target="name" source="name"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="partof_continent" source="partof.continent"/>
-    </input>
-    <filter>&quot;partof_continent&quot; = 'Europe'</filter>
-  </calculationView>
+    </input></calculationView>
 </calculationViews>
 <logicalModel id="Countries">
   <attributes>
